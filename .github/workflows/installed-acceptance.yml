@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: wordflowlab/hetu-murder-mystery
-          ref: c9407ad9fcb5bea104292bd2be6067079f50eaa2
+          ref: e41f45a3e7adf8bd7fb6d3154dfabed5c21c80d6
           path: hetu-murder-mystery
           persist-credentials: false
       - name: Install test dependencies without compiling host
