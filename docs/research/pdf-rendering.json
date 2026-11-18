@@ -1,0 +1,36 @@
+{
+  "page_count": 4,
+  "pages": [
+    {
+      "height": 700,
+      "image": "picturebook-page-1.png",
+      "page": 1,
+      "text": "林溪在雨港等一封信。",
+      "width": 700
+    },
+    {
+      "height": 700,
+      "image": "picturebook-page-2.png",
+      "page": 2,
+      "text": "信封里，藏着一把旧钥匙。",
+      "width": 700
+    },
+    {
+      "height": 700,
+      "image": "picturebook-page-3.png",
+      "page": 3,
+      "text": "她决定沿着邮路出发。",
+      "width": 700
+    },
+    {
+      "height": 700,
+      "image": "picturebook-page-4.png",
+      "page": 4,
+      "text": "下一封信，由她寄出。",
+      "width": 700
+    }
+  ],
+  "renderer": "macOS PDFKit",
+  "pdf_sha256": "372fde83139a40ab9464cc2e7841e9558e8d2f482b0463d5d0c7771bfee709ab",
+  "final_package_sha256": "6125d3b3f303f441ffdcad1b4762c16858a3122e39015751219292aa60d758ed"
+}

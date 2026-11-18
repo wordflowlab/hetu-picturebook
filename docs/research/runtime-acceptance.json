@@ -1,0 +1,45 @@
+{
+  "recorded_at": "2026-11-18T17:29:43.402Z",
+  "plugin_id": "org.wordflowlab.picturebook",
+  "package_sha256": "6125d3b3f303f441ffdcad1b4762c16858a3122e39015751219292aa60d758ed",
+  "host_version": "hetu 0.12.4",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "actions": [
+    "skills.read",
+    "save_project",
+    "check_layout",
+    "page_digest",
+    "put_note",
+    "locate_page",
+    "render_book",
+    "export_pdf",
+    "put_page",
+    "list_projects",
+    "get_source",
+    "get_operation",
+    "get_basis",
+    "build_context",
+    "create_handoff",
+    "compare_versions",
+    "export_project",
+    "remove_note",
+    "remove_page",
+    "get_project"
+  ],
+  "skill_resources": 3,
+  "lifecycle": [
+    "install",
+    "disable",
+    "enable",
+    "uninstall",
+    "install"
+  ],
+  "fixed_history": true,
+  "CAS": true,
+  "original_key_recovery": true,
+  "artifact_sha256_verified": true,
+  "limits": [
+    "没有付费模型、作者采纳、定稿或Windows/Linux专业运行验收"
+  ]
+}

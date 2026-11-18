@@ -1,0 +1,381 @@
+{
+  "recorded_at": "2026-11-18T16:57:58.062Z",
+  "client_adapter": "codex",
+  "live_mcp_version": "0.11.11",
+  "separate_official_host_version": "0.12.4",
+  "original_plugins_preserved": true,
+  "before": [
+    {
+      "id": "org.wordflowlab.adaptation-studio",
+      "sha256": "354d2fb5e325828e0b189bac79eff50be3ee312466c0a437c73f3ca907b061e1",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.art-direction",
+      "sha256": "54f05a084e642455f90defc9a2fc8da9c71b9d4204e8f51b176843d5f3673682",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.audio-drama",
+      "sha256": "95ab0357cce70a38643070f144a3b7a1c7a7d697b3573b1c0cc67c728584fa23",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.book-export",
+      "sha256": "e9dfd676d26c6ec450f21cdce83599b921492ca46e1a29a414400433a09c3e68",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.character-lab",
+      "sha256": "d3404b533b5e8a03e45e84eb23f5d4a99209568a0d8e09e03b13a0b05d6a4944",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.comic-studio",
+      "sha256": "7e18dc9956a2678171c5692eef3c512315e0a40447d507c1bb292214fe284420",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.director-stage",
+      "sha256": "1f7755622c1f50c9932ff7536c5175d113f30bcff77f58921efffe012dab645c",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.interactive-fiction",
+      "sha256": "c777120519a56fd93d1e132c078ac99b5a65f19103070a088b1cedf8f74e0a00",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.lorebook-bridge",
+      "sha256": "0620fb1c75dbedd1e76306e1be3445ab383f801cfe0eac5341623a9e05054402",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.mystery-lab",
+      "sha256": "2c93b9094f2660a96e5193224530bfbc078594f071b8c4b5057fd7df7147f606",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.novel-atlas",
+      "sha256": "3b0b6006069eb0b2c70c709ee9a3ed2bd006b4491946a161748389e77a46d298",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.novel-planner",
+      "sha256": "a38c3204bbb35fb075690f4ff2c991c63a136e09b34b8c24d67c93115de5df0c",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.novel-review",
+      "sha256": "f5eceea32772e9028ddaf36607ceb2c4eddd0a70eb17373e4c4bf871c21c18f4",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.prose-studio",
+      "sha256": "5005ec439334b5babd9d9bd35b3a7575185b55df67f3ea3623ed3c21226c3c7f",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.reader-review",
+      "sha256": "9b354d5494d2158da3431b67bd76ad326c617dc08c9908dc594d6b1a1fb454ab",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.readthrough",
+      "sha256": "5723789aa1a672cdf9d1fb2e3a0756e7f2b194a67e50815d6ea5e8543dce8bd1",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.screenplay",
+      "sha256": "3db2b1f8b3577b6bd1806e8ca0b1a25b019b51299a4f6a3fea53fc821cecdf99",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.series-organizer",
+      "sha256": "e51032102970d97f650165fdd2e17a3a6b5991e707ab3028dfc54422969663dc",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.story-analysis",
+      "sha256": "fb117ee372a4fce7cde8cb1afd997f3d0b168066af2b1334171e721dfcd21009",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.story-research",
+      "sha256": "5adeffdf4bfe4f71ac614204bfe77825747164fa4705f6b9ec52a1d908b5bf9f",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.story-translation",
+      "sha256": "59080c4c196a79bdd09c50ebbd2a99d46a43dc561575a785fb9b8eed78ec3148",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.subtitle-studio",
+      "sha256": "5c9baeffe35b436d7504752db9fa5c2613fa65418fcbea921c4bfef9dd5a84d8",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.video-studio",
+      "sha256": "549b654781dc4949ee4abc28a94be97bb3bb12df96aead7208eb0ca1b7c0db2a",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.world-studio",
+      "sha256": "5050928ecd28c72b5be6eb227a39e09919ee8c12354967cc482f0b2011d364d5",
+      "enabled": true
+    }
+  ],
+  "after": [
+    {
+      "id": "org.wordflowlab.screenplay",
+      "sha256": "3db2b1f8b3577b6bd1806e8ca0b1a25b019b51299a4f6a3fea53fc821cecdf99",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.video-studio",
+      "sha256": "549b654781dc4949ee4abc28a94be97bb3bb12df96aead7208eb0ca1b7c0db2a",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.director-stage",
+      "sha256": "1f7755622c1f50c9932ff7536c5175d113f30bcff77f58921efffe012dab645c",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.story-research",
+      "sha256": "5adeffdf4bfe4f71ac614204bfe77825747164fa4705f6b9ec52a1d908b5bf9f",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.character-lab",
+      "sha256": "d3404b533b5e8a03e45e84eb23f5d4a99209568a0d8e09e03b13a0b05d6a4944",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.story-analysis",
+      "sha256": "fb117ee372a4fce7cde8cb1afd997f3d0b168066af2b1334171e721dfcd21009",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.lorebook-bridge",
+      "sha256": "0620fb1c75dbedd1e76306e1be3445ab383f801cfe0eac5341623a9e05054402",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.interactive-fiction",
+      "sha256": "c777120519a56fd93d1e132c078ac99b5a65f19103070a088b1cedf8f74e0a00",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.series-organizer",
+      "sha256": "e51032102970d97f650165fdd2e17a3a6b5991e707ab3028dfc54422969663dc",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.story-translation",
+      "sha256": "59080c4c196a79bdd09c50ebbd2a99d46a43dc561575a785fb9b8eed78ec3148",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.readthrough",
+      "sha256": "5723789aa1a672cdf9d1fb2e3a0756e7f2b194a67e50815d6ea5e8543dce8bd1",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.book-export",
+      "sha256": "e9dfd676d26c6ec450f21cdce83599b921492ca46e1a29a414400433a09c3e68",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.novel-review",
+      "sha256": "f5eceea32772e9028ddaf36607ceb2c4eddd0a70eb17373e4c4bf871c21c18f4",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.novel-atlas",
+      "sha256": "3b0b6006069eb0b2c70c709ee9a3ed2bd006b4491946a161748389e77a46d298",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.prose-studio",
+      "sha256": "5005ec439334b5babd9d9bd35b3a7575185b55df67f3ea3623ed3c21226c3c7f",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.novel-planner",
+      "sha256": "a38c3204bbb35fb075690f4ff2c991c63a136e09b34b8c24d67c93115de5df0c",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.adaptation-studio",
+      "sha256": "354d2fb5e325828e0b189bac79eff50be3ee312466c0a437c73f3ca907b061e1",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.audio-drama",
+      "sha256": "95ab0357cce70a38643070f144a3b7a1c7a7d697b3573b1c0cc67c728584fa23",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.reader-review",
+      "sha256": "9b354d5494d2158da3431b67bd76ad326c617dc08c9908dc594d6b1a1fb454ab",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.comic-studio",
+      "sha256": "7e18dc9956a2678171c5692eef3c512315e0a40447d507c1bb292214fe284420",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.world-studio",
+      "sha256": "5050928ecd28c72b5be6eb227a39e09919ee8c12354967cc482f0b2011d364d5",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.mystery-lab",
+      "sha256": "2c93b9094f2660a96e5193224530bfbc078594f071b8c4b5057fd7df7147f606",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.art-direction",
+      "sha256": "54f05a084e642455f90defc9a2fc8da9c71b9d4204e8f51b176843d5f3673682",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.subtitle-studio",
+      "sha256": "5c9baeffe35b436d7504752db9fa5c2613fa65418fcbea921c4bfef9dd5a84d8",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.picturebook",
+      "sha256": "6125d3b3f303f441ffdcad1b4762c16858a3122e39015751219292aa60d758ed",
+      "enabled": true
+    },
+    {
+      "id": "org.wordflowlab.murder-mystery",
+      "sha256": "c2bf8995da6ddb2cbead5e4962bb9d9130ee6e8d387df5bdca39015374bfed24",
+      "enabled": true
+    }
+  ],
+  "fixed_work": {
+    "revision_ref": {
+      "revision": 1
+    },
+    "sha256": "9c8108a1d8300e5a86281c716a38c39ad44f357b0621e65452895476136e689b",
+    "work_ref": {
+      "kind": "novel",
+      "object_id": "novel_14c5646f-426c-418b-9344-1b4444bb5089",
+      "workspace_id": "workspace_d70ff2bb-b91f-4f8c-bc85-394e46d2ba69"
+    }
+  },
+  "plugins": [
+    {
+      "plugin_id": "org.wordflowlab.picturebook",
+      "package_sha256": "6125d3b3f303f441ffdcad1b4762c16858a3122e39015751219292aa60d758ed",
+      "actions": 19,
+      "skill_resources": [
+        "SKILL.md",
+        "references/operations.md",
+        "references/workflows.md"
+      ],
+      "saved_ref": {
+        "object_id": "ext_f0e3b66c-2bfa-4a30-b991-ef93f434fbe7",
+        "revision": 3,
+        "sha256": "5666fd0582e0d14e57bab2712db7c2aa222b10bb29058ab6aa53b4b7cb3ad6cc"
+      }
+    },
+    {
+      "plugin_id": "org.wordflowlab.murder-mystery",
+      "package_sha256": "c2bf8995da6ddb2cbead5e4962bb9d9130ee6e8d387df5bdca39015374bfed24",
+      "actions": 29,
+      "skill_resources": [
+        "SKILL.md",
+        "references/operations.md",
+        "references/workflows.md"
+      ],
+      "saved_ref": {
+        "object_id": "ext_49e43c16-da0f-4e18-b2a0-e0eb96227dbc",
+        "revision": 9,
+        "sha256": "2b4a481e4587ebe08fb9e5e223a4d6e154460ccf9859dc137568793ef3fea4f2"
+      }
+    }
+  ],
+  "completed": [
+    "热安装与动态发现",
+    "完整包内Skill及参考读取",
+    "新作品固定修订和已有工程读取",
+    "绘本保存、字体排版检查、页意见和固定交接",
+    "剧本杀两幕模拟发放、推测、复盘及精确修订回读",
+    "最终中文界面包热更新、原工程回读和下一轮返工",
+    "绘本旧意见过期检查、剧本杀旧试玩基线保持"
+  ],
+  "limits": [
+    "当前对话不替代正式0.12.4制品验收",
+    "隔离样本，模拟不是真人试玩",
+    "不含付费生成、外部发送、正文采纳或定稿"
+  ],
+  "final_checked_at": "2026-11-18T17:10:18.128Z",
+  "previous_candidates": [
+    {
+      "plugin_id": "org.wordflowlab.picturebook",
+      "package_sha256": "61011cea6c73c321de088032c08db71f848735ab71f49d1755e3b65ee2fabe15",
+      "actions": 19,
+      "skill_resources": [
+        "SKILL.md",
+        "references/operations.md",
+        "references/workflows.md"
+      ],
+      "saved_ref": {
+        "object_id": "ext_f0e3b66c-2bfa-4a30-b991-ef93f434fbe7",
+        "revision": 2,
+        "sha256": "f72c5092352fe61dff1ecbb72752d55688d37c46b0c6df1ea74a1a5d12a392d3"
+      }
+    },
+    {
+      "plugin_id": "org.wordflowlab.murder-mystery",
+      "package_sha256": "f23f301bb9c84edcbea1a2b8aa61febcd740507c5e156a342d40a0ed84bf5e3b",
+      "actions": 29,
+      "skill_resources": [
+        "SKILL.md",
+        "references/operations.md",
+        "references/workflows.md"
+      ],
+      "saved_ref": {
+        "object_id": "ext_49e43c16-da0f-4e18-b2a0-e0eb96227dbc",
+        "revision": 8,
+        "sha256": "c20799bb220bc060bbf8879b4e499da5afebb2ac36d0e69b83efbce413b2b0cb"
+      }
+    }
+  ],
+  "refreshed_connection": {
+    "version": "0.12.3",
+    "stable_action_entry_verified": true,
+    "plugins": [
+      {
+        "slug": "picturebook",
+        "version": "0.12.3",
+        "transport": "hetu_call_action",
+        "skill_sha256": "90862b185d07180180ab049d2f575b83b8e0595792a99044bee6b0eab29ec16d",
+        "package_sha256": "6125d3b3f303f441ffdcad1b4762c16858a3122e39015751219292aa60d758ed",
+        "record_ref": {
+          "object_id": "ext_f0e3b66c-2bfa-4a30-b991-ef93f434fbe7",
+          "revision": 3,
+          "sha256": "5666fd0582e0d14e57bab2712db7c2aa222b10bb29058ab6aa53b4b7cb3ad6cc"
+        }
+      },
+      {
+        "slug": "murder-mystery",
+        "version": "0.12.3",
+        "transport": "hetu_call_action",
+        "skill_sha256": "ed89089d85f0cfd42c6d35cd737d249b92a6ed865a3a43033b7bee97719b1ab8",
+        "package_sha256": "c2bf8995da6ddb2cbead5e4962bb9d9130ee6e8d387df5bdca39015374bfed24",
+        "record_ref": {
+          "object_id": "ext_49e43c16-da0f-4e18-b2a0-e0eb96227dbc",
+          "revision": 9,
+          "sha256": "2b4a481e4587ebe08fb9e5e223a4d6e154460ccf9859dc137568793ef3fea4f2"
+        }
+      }
+    ]
+  }
+}
