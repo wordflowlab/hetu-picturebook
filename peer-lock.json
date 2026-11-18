@@ -1,0 +1,6 @@
+{
+  "repository": "wordflowlab/hetu-murder-mystery",
+  "source_commit": "c9407ad9fcb5bea104292bd2be6067079f50eaa2",
+  "package_sha256": "f23f301bb9c84edcbea1a2b8aa61febcd740507c5e156a342d40a0ed84bf5e3b",
+  "scope": "仅联合验收，不是运行时依赖"
+}

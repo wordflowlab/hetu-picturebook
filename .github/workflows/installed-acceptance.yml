@@ -24,10 +24,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '25.0.0'
+      - uses: actions/checkout@v4
+        with:
+          repository: wordflowlab/hetu-murder-mystery
+          ref: c9407ad9fcb5bea104292bd2be6067079f50eaa2
+          path: hetu-murder-mystery
+          persist-credentials: false
       - name: Install test dependencies without compiling host
         run: |
           (cd host && npm ci)
           (cd plugin && npm ci)
+          (cd hetu-murder-mystery && npm ci && npm run build)
       - name: Install browser for offline artifacts
         working-directory: plugin
         run: npx playwright install chromium
@@ -42,6 +49,7 @@ jobs:
         working-directory: plugin
         env:
           GH_TOKEN: ${{ github.token }}
+          HETU_PEER_DIRECTORY: ${{ github.workspace }}/hetu-murder-mystery
         run: python3 scripts/accept-installed.py
       - name: Retain actual work surfaces and acceptance
         if: always()

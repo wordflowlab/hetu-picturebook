@@ -1,0 +1,57 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {cp,readFile,writeFile,mkdir} from 'node:fs/promises';
+import path from 'node:path';
+import {pathToFileURL} from 'node:url';
+import {start} from './support/machine.ts';
+import {scenario,original,selection,base} from './support/scenario.ts';
+import {prepareMedia} from './support/assets.ts';
+import {importText} from './support/import.ts';
+import {candidate} from './support/creative.ts';
+const peer=JSON.parse(await readFile(new URL('../peer-lock.json',import.meta.url),'utf8'));
+test('固定故事到绘本与试玩复盘，返工候选及独立剧本视频',{timeout:1200000},async t=>{
+ const c=await start(),directory=path.resolve(process.env.HETU_PEER_DIRECTORY??'../hetu-murder-mystery'),stages:string[]=[];
+ try{
+  const pkgdir=path.join(c.directory,'murder-mystery');await cp(path.join(directory,'dist'),pkgdir,{recursive:true});
+  const pkg=await c.ok('hetu_plugins_inspect_package',{package_directory:pkgdir});assert.equal(pkg.package_sha256,peer.package_sha256);
+  await c.ok('hetu_plugins_apply',{action:'install',plugin_id:pkg.manifest.id,package_directory:pkgdir,package_sha256:pkg.package_sha256,expected_sha256:(await c.ok('hetu_plugins_inspect')).state_sha256,authorization_note:'按本批要求验收固定双包，仅隔离作品',operation_key:'cross-peer-install'});
+  const binding={...c.binding,plugin_id:pkg.manifest.id,package_sha256:pkg.package_sha256},cap=await c.ok('hetu_plugins_capabilities',binding);
+  const invoke=async(action:string,args:any)=>{const r=await c.ok('hetu_plugins_invoke',{...binding,capabilities_sha256:cap.capabilities_sha256,action,arguments:args});assert.equal(r.result.status,'succeeded',JSON.stringify(r));return r.result.data;};
+  const mod=await import(pathToFileURL(path.join(directory,'tests/support/scenario.ts')).href),model=await import(pathToFileURL(path.join(directory,'src/domain/model.ts')).href);
+  const refs=await importText(c,[original]),p=scenario();await prepareMedia(c,p,refs,'picturebook');
+  const source=await c.ok('hetu_read_work',{management_ref:c.management,work_ref:c.work});
+  let book=await c.invoke('save_project',{content:p,source_refs:refs,expected_revision:0,expected_sha256:'',operation_key:'cross-book'});
+  const digest=await c.invoke('page_digest',{...selection(book),page_id:'page-2'});
+  book=await c.invoke('put_note',{...base(book,'cross-note'),note:{id:'turn-note',page_id:'page-2',page_sha256:digest.page_sha256,comment:'翻页前只留下钥匙，不先说出寄信人。',status:'open',resolution:''}});
+  const older=book,updated=structuredClone(book.object.content.pages[1]);updated.texts[0].text='信封里，只剩一把旧钥匙。';
+  book=await c.invoke('put_page',{...base(book,'cross-page-rework'),page:updated});assert.deepEqual((await c.invoke('check_layout',selection(book))).stale_note_ids,['turn-note']);assert.equal((await c.invoke('get_project',selection(older))).sha256,older.sha256);
+  stages.push('绘本固定真实图像与翻页意见，局部返工保留旧修订并标记过期意见');
+  const mp=mod.scenario();mp.basis_refs=[{owner_plugin_id:c.pkg.manifest.id,object_id:book.object.object_id,revision:book.object.revision,sha256:book.sha256}];
+  let murder=await invoke('save_project',{content:mp,source_refs:refs,expected_revision:0,expected_sha256:'',operation_key:'cross-murder'});
+  const author=murder;murder=await invoke('start_session',{...base(murder,'cross-start'),session_id:'sim',label:'信息顺序模拟',mode:'agent_simulated',assignments:mp.roles.map((r:any)=>({role_id:r.id,participant:r.name+' 模拟'}))});
+  for(const clue of ['seal','letter'])murder=await invoke('release_clue',{...base(murder,'cross-release-'+clue),session_id:'sim',clue_id:clue});
+  assert.ok(!JSON.stringify(await invoke('session_player_view',{...selection(murder),session_id:'sim',role_id:'lin'})).includes('第二幕秘密'));
+  murder=await invoke('record_guess',{...base(murder,'cross-guess'),session_id:'sim',role_id:'lin',text:'旧邮戳与钥匙表明寄信人早于旅人抵达。'});
+  murder=await invoke('advance_act',{...base(murder,'cross-advance'),session_id:'sim'});
+  murder=await invoke('release_clue',{...base(murder,'cross-release-register'),session_id:'sim',clue_id:'register'});
+  murder=await invoke('close_session',{...base(murder,'cross-close'),session_id:'sim',text:'模拟复盘：保留两步证据顺序，下一稿补充守站人的行动。'});
+  const replay=await invoke('session_view',{...selection(murder),session_id:'sim'});assert.equal(replay.author_ref.sha256,author.sha256);assert.equal(replay.closed,true);
+  const edited={...murder.object.content,solution:'新版作者解答：补充守站人的投递行动。'};murder=await invoke('save_project',{...base(murder,'cross-author-rework'),content:edited});assert.equal((await invoke('session_view',{...selection(murder),session_id:'sim'})).author_ref.sha256,author.sha256);
+  stages.push('固定作者修订完成两幕模拟试玩，当前作者改稿不重写试玩基线');
+  const first=await candidate(c,'下一章 旧站\n\n林溪将钥匙交给守站人。她没有先问寄信人的名字，而是请他打开旧站。\n','cross-next-candidate');
+  const handoff=await invoke('create_handoff',{...selection(murder),goal:'根据试玩复盘，继续下一章并保留原故事'});assert.equal(handoff.object_ref.sha256,murder.sha256);
+  const second=await candidate(c,'下一章 旧站 第二稿\n\n守站人取出旧名册，把投递日期指给林溪看。她这才明白，回信早在她动身之前便已寄出。\n','cross-revised-candidate');
+  assert.notEqual(first.source_ref.sha256,second.source_ref.sha256);assert.equal((await c.ok('hetu_read_work',{management_ref:c.management,work_ref:c.work})).sha256,source.sha256);
+  stages.push('复盘交接到两个宿主参考稿，原正文、旧来源和旧专业修订保持');
+  const begin=await c.ok('hetu_begin_creation',{brief:'独立剧本专业插件验收',locale:'zh-CN',operation_key:'cross-drama-begin'});
+  const target=await c.ok('hetu_create_drama_from_project',{management_ref:begin.management_ref,project_id:begin.project.project_id,expected:{revision:begin.revision,sha256:begin.sha256},target_path:begin.target_path,profile:{title:'雨港 独立剧本',description:'不借用小说权限',mode:'original',language_tag:'zh-CN'},operation_key:'cross-drama-create'});
+  const dm=target.workspace_management_ref,dw={workspace_id:dm.scope_ref.id,kind:'drama',object_id:target.created_workspace_ref.drama_project_id};
+  assert.notEqual((await c.call('hetu_read_work',{management_ref:c.management,work_ref:dw})).status,'succeeded');
+  for(const [entry,content] of [[c.pkg,{...p,pages:[],notes:[]}],[{manifest:pkg.manifest,package_sha256:pkg.package_sha256},model.newProject('独立剧本杀工程')]] as any){const b={management_ref:dm,work_ref:dw,plugin_id:entry.manifest.id,package_sha256:entry.package_sha256},cp=await c.ok('hetu_plugins_capabilities',b),r=await c.ok('hetu_plugins_invoke',{...b,capabilities_sha256:cp.capabilities_sha256,action:'save_project',arguments:{content,source_refs:[],expected_revision:0,expected_sha256:'',operation_key:'drama-'+entry.manifest.id}});assert.equal(r.result.status,'succeeded',JSON.stringify(r));}
+  stages.push('两个插件分别在独立剧本中保存，跨作品管理引用拒绝');
+  const vb=await c.ok('hetu_begin_creation',{brief:'独立视频绘本验收',locale:'zh-CN',operation_key:'cross-video-begin'}),vp=await c.ok('hetu_save_creation_project',{management_ref:vb.management_ref,project_id:vb.project.project_id,expected:{revision:vb.revision,sha256:vb.sha256},brief:'视频的配套绘本',selected_fields:{},work_profile:{work_type:'video',language_tag:'zh-CN',drama_mode:null},operation_key:'cross-video-profile'}),vc=await c.ok('hetu_create_video_from_project',{management_ref:vb.management_ref,project_id:vb.project.project_id,expected:{revision:vp.revision,sha256:vp.sha256},target_path:vb.target_path,profile:{title:'雨港 独立视频',brief:'配套绘本',language_tag:'zh-CN'},operation_key:'cross-video-create'});
+  const b={management_ref:vc.workspace_management_ref,work_ref:vc.video_project.work_ref,plugin_id:c.pkg.manifest.id,package_sha256:c.pkg.package_sha256},vCap=await c.ok('hetu_plugins_capabilities',b),vSave=await c.ok('hetu_plugins_invoke',{...b,capabilities_sha256:vCap.capabilities_sha256,action:'save_project',arguments:{content:{...p,pages:[],notes:[]},source_refs:[],expected_revision:0,expected_sha256:'',operation_key:'cross-video-book'}});assert.equal(vSave.result.status,'succeeded');
+  stages.push('绘本工程可在独立视频中保存，不要求建立上游小说或剧本');
+  const dir=process.env.HETU_RECEIPT_DIRECTORY??'docs/research';await mkdir(dir,{recursive:true});await writeFile(path.join(dir,'cross-acceptance.json'),JSON.stringify({recorded_at:new Date().toISOString(),host_version:c.coreVersion,package_sha256:c.pkg.package_sha256,peer_package_sha256:pkg.package_sha256,stages,original_sha256:source.sha256,adopted:false,finalized:false,limits:['Agent模拟非真人研究','未执行付费生成、对外发送、采纳与定稿']},null,2)+'\n');t.diagnostic(c.directory);
+ }finally{await c.client.close();}
+});

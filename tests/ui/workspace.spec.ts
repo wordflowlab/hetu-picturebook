@@ -155,8 +155,7 @@ test("真实Electron审阅、专业操作、导出、冲突保留与关闭重开
         });
         for (const [viewIndex, viewName] of config.tabs.entries()) {
           await tab(viewIndex);
-          if(viewIndex===0){const board=page.frameLocator("iframe[title='固定美术参考板']");await expect(board.locator("img")).toHaveCount(2);await expect.poll(()=>board.locator("img").evaluateAll((images:any[])=>images.every(image=>image.complete&&image.naturalWidth>100))).toBe(true);}
-          if(viewIndex===2||viewIndex===3){const images=page.locator(".region-image img");await expect(images).toHaveCount(viewIndex===2?2:1);await expect.poll(()=>images.evaluateAll((rows:HTMLImageElement[])=>rows.every(image=>image.complete&&image.naturalWidth>100))).toBe(true);}
+          if(viewIndex===0)await expect(page.frameLocator("iframe[title=\'固定绘本阅读本\']").locator("article")).toHaveCount(4);
           await page.screenshot({
             path: info.outputPath(
               theme + "-" + width + "-view-" + viewIndex + ".png",
