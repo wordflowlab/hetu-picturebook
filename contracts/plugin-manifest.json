@@ -1,0 +1,1692 @@
+{
+  "manifest_version": 1,
+  "id": "org.wordflowlab.picturebook",
+  "version": "0.1.0",
+  "host_api": "1",
+  "display": {
+    "zh-CN": "绘本工坊",
+    "en": "Picturebook Studio"
+  },
+  "description": {
+    "zh-CN": "围绕固定作品和图片编排绘本跨页、图文节奏与毫米版面，检查并交付离线阅读本和嵌字PDF。",
+    "en": "Picturebook Studio creative engineering using Hetu public SDK and external Agents."
+  },
+  "license": "Apache-2.0",
+  "work_kinds": [
+    "novel",
+    "drama",
+    "video"
+  ],
+  "dependencies": [],
+  "runtime": {
+    "entry": "backend.mjs"
+  },
+  "contributions": {
+    "data": [
+      {
+        "kind": "picturebook",
+        "schema_version": "1.0.0",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "format_version": {
+              "const": 1
+            },
+            "title": {
+              "type": "string",
+              "maxLength": 170,
+              "minLength": 1
+            },
+            "basis_refs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "owner_plugin_id": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                  },
+                  "object_id": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                  },
+                  "revision": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1000000
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                },
+                "required": [
+                  "owner_plugin_id",
+                  "object_id",
+                  "revision",
+                  "sha256"
+                ]
+              },
+              "maxItems": 100
+            },
+            "format": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "width_mm": {
+                  "type": "number",
+                  "minimum": 50,
+                  "maximum": 500
+                },
+                "height_mm": {
+                  "type": "number",
+                  "minimum": 50,
+                  "maximum": 500
+                },
+                "bleed_mm": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 15
+                },
+                "safe_mm": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 30
+                },
+                "direction": {
+                  "enum": [
+                    "ltr",
+                    "rtl"
+                  ]
+                },
+                "binding": {
+                  "enum": [
+                    "digital",
+                    "saddle_stitch"
+                  ]
+                },
+                "target_dpi": {
+                  "type": "integer",
+                  "minimum": 72,
+                  "maximum": 600
+                }
+              },
+              "required": [
+                "width_mm",
+                "height_mm",
+                "bleed_mm",
+                "safe_mm",
+                "direction",
+                "binding",
+                "target_dpi"
+              ]
+            },
+            "pages": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                  },
+                  "number": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 32
+                  },
+                  "title": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                  },
+                  "turn_intent": {
+                    "type": "string",
+                    "maxLength": 4000,
+                    "minLength": 0
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "maxLength": 100,
+                          "minLength": 1
+                        },
+                        "asset_source_index": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 99
+                        },
+                        "alt": {
+                          "type": "string",
+                          "maxLength": 1000,
+                          "minLength": 0
+                        },
+                        "rect": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "x": {
+                              "type": "number",
+                              "minimum": -30,
+                              "maximum": 1000
+                            },
+                            "y": {
+                              "type": "number",
+                              "minimum": -30,
+                              "maximum": 1000
+                            },
+                            "width": {
+                              "type": "number",
+                              "minimum": 0.1,
+                              "maximum": 1000
+                            },
+                            "height": {
+                              "type": "number",
+                              "minimum": 0.1,
+                              "maximum": 1000
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y",
+                            "width",
+                            "height"
+                          ]
+                        },
+                        "fit": {
+                          "enum": [
+                            "contain",
+                            "cover"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "asset_source_index",
+                        "alt",
+                        "rect",
+                        "fit"
+                      ]
+                    },
+                    "maxItems": 8
+                  },
+                  "texts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "maxLength": 100,
+                          "minLength": 1
+                        },
+                        "text": {
+                          "type": "string",
+                          "maxLength": 8000,
+                          "minLength": 1
+                        },
+                        "rect": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "x": {
+                              "type": "number",
+                              "minimum": -30,
+                              "maximum": 1000
+                            },
+                            "y": {
+                              "type": "number",
+                              "minimum": -30,
+                              "maximum": 1000
+                            },
+                            "width": {
+                              "type": "number",
+                              "minimum": 0.1,
+                              "maximum": 1000
+                            },
+                            "height": {
+                              "type": "number",
+                              "minimum": 0.1,
+                              "maximum": 1000
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y",
+                            "width",
+                            "height"
+                          ]
+                        },
+                        "font_size_pt": {
+                          "type": "number",
+                          "minimum": 8,
+                          "maximum": 72
+                        },
+                        "line_height": {
+                          "type": "number",
+                          "minimum": 1,
+                          "maximum": 2.5
+                        },
+                        "color": {
+                          "type": "string",
+                          "pattern": "^#[0-9a-fA-F]{6}$"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "text",
+                        "rect",
+                        "font_size_pt",
+                        "line_height",
+                        "color"
+                      ]
+                    },
+                    "maxItems": 16
+                  }
+                },
+                "required": [
+                  "id",
+                  "number",
+                  "title",
+                  "turn_intent",
+                  "images",
+                  "texts"
+                ]
+              },
+              "maxItems": 100
+            },
+            "notes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                  },
+                  "page_id": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                  },
+                  "page_sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "comment": {
+                    "type": "string",
+                    "maxLength": 8000,
+                    "minLength": 1
+                  },
+                  "status": {
+                    "enum": [
+                      "open",
+                      "resolved"
+                    ]
+                  },
+                  "resolution": {
+                    "type": "string",
+                    "maxLength": 4000,
+                    "minLength": 0
+                  }
+                },
+                "required": [
+                  "id",
+                  "page_id",
+                  "page_sha256",
+                  "comment",
+                  "status",
+                  "resolution"
+                ]
+              },
+              "maxItems": 100
+            }
+          },
+          "required": [
+            "format_version",
+            "title",
+            "basis_refs",
+            "format",
+            "pages",
+            "notes"
+          ]
+        }
+      }
+    ],
+    "views": [
+      {
+        "id": "main",
+        "title": "绘本工坊",
+        "entry": "index.html",
+        "navigation": "integrated",
+        "object_kinds": [
+          "picturebook"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "list_projects",
+        "title": "查找专业工程",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "cursor": {
+              "type": "string",
+              "maxLength": 4000,
+              "minLength": 1
+            },
+            "query": {
+              "type": "string",
+              "maxLength": 1000,
+              "minLength": 0
+            }
+          },
+          "required": []
+        }
+      },
+      {
+        "id": "get_project",
+        "title": "读取固定专业工程",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            }
+          },
+          "required": [
+            "object_id"
+          ]
+        }
+      },
+      {
+        "id": "save_project",
+        "title": "保存专业工程",
+        "effect": "managed_write",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "expected_revision": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^([a-f0-9]{64})?$"
+            },
+            "operation_key": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            },
+            "content": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "format_version": {
+                  "const": 1
+                },
+                "title": {
+                  "type": "string",
+                  "maxLength": 170,
+                  "minLength": 1
+                },
+                "basis_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "owner_plugin_id": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 1
+                      },
+                      "object_id": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 1
+                      },
+                      "revision": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 1000000
+                      },
+                      "sha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      }
+                    },
+                    "required": [
+                      "owner_plugin_id",
+                      "object_id",
+                      "revision",
+                      "sha256"
+                    ]
+                  },
+                  "maxItems": 100
+                },
+                "format": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "width_mm": {
+                      "type": "number",
+                      "minimum": 50,
+                      "maximum": 500
+                    },
+                    "height_mm": {
+                      "type": "number",
+                      "minimum": 50,
+                      "maximum": 500
+                    },
+                    "bleed_mm": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 15
+                    },
+                    "safe_mm": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 30
+                    },
+                    "direction": {
+                      "enum": [
+                        "ltr",
+                        "rtl"
+                      ]
+                    },
+                    "binding": {
+                      "enum": [
+                        "digital",
+                        "saddle_stitch"
+                      ]
+                    },
+                    "target_dpi": {
+                      "type": "integer",
+                      "minimum": 72,
+                      "maximum": 600
+                    }
+                  },
+                  "required": [
+                    "width_mm",
+                    "height_mm",
+                    "bleed_mm",
+                    "safe_mm",
+                    "direction",
+                    "binding",
+                    "target_dpi"
+                  ]
+                },
+                "pages": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 1
+                      },
+                      "number": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 32
+                      },
+                      "title": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1
+                      },
+                      "turn_intent": {
+                        "type": "string",
+                        "maxLength": 4000,
+                        "minLength": 0
+                      },
+                      "images": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "maxLength": 100,
+                              "minLength": 1
+                            },
+                            "asset_source_index": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 99
+                            },
+                            "alt": {
+                              "type": "string",
+                              "maxLength": 1000,
+                              "minLength": 0
+                            },
+                            "rect": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "x": {
+                                  "type": "number",
+                                  "minimum": -30,
+                                  "maximum": 1000
+                                },
+                                "y": {
+                                  "type": "number",
+                                  "minimum": -30,
+                                  "maximum": 1000
+                                },
+                                "width": {
+                                  "type": "number",
+                                  "minimum": 0.1,
+                                  "maximum": 1000
+                                },
+                                "height": {
+                                  "type": "number",
+                                  "minimum": 0.1,
+                                  "maximum": 1000
+                                }
+                              },
+                              "required": [
+                                "x",
+                                "y",
+                                "width",
+                                "height"
+                              ]
+                            },
+                            "fit": {
+                              "enum": [
+                                "contain",
+                                "cover"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "asset_source_index",
+                            "alt",
+                            "rect",
+                            "fit"
+                          ]
+                        },
+                        "maxItems": 8
+                      },
+                      "texts": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "maxLength": 100,
+                              "minLength": 1
+                            },
+                            "text": {
+                              "type": "string",
+                              "maxLength": 8000,
+                              "minLength": 1
+                            },
+                            "rect": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "x": {
+                                  "type": "number",
+                                  "minimum": -30,
+                                  "maximum": 1000
+                                },
+                                "y": {
+                                  "type": "number",
+                                  "minimum": -30,
+                                  "maximum": 1000
+                                },
+                                "width": {
+                                  "type": "number",
+                                  "minimum": 0.1,
+                                  "maximum": 1000
+                                },
+                                "height": {
+                                  "type": "number",
+                                  "minimum": 0.1,
+                                  "maximum": 1000
+                                }
+                              },
+                              "required": [
+                                "x",
+                                "y",
+                                "width",
+                                "height"
+                              ]
+                            },
+                            "font_size_pt": {
+                              "type": "number",
+                              "minimum": 8,
+                              "maximum": 72
+                            },
+                            "line_height": {
+                              "type": "number",
+                              "minimum": 1,
+                              "maximum": 2.5
+                            },
+                            "color": {
+                              "type": "string",
+                              "pattern": "^#[0-9a-fA-F]{6}$"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "text",
+                            "rect",
+                            "font_size_pt",
+                            "line_height",
+                            "color"
+                          ]
+                        },
+                        "maxItems": 16
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "number",
+                      "title",
+                      "turn_intent",
+                      "images",
+                      "texts"
+                    ]
+                  },
+                  "maxItems": 100
+                },
+                "notes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 1
+                      },
+                      "page_id": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 1
+                      },
+                      "page_sha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      },
+                      "comment": {
+                        "type": "string",
+                        "maxLength": 8000,
+                        "minLength": 1
+                      },
+                      "status": {
+                        "enum": [
+                          "open",
+                          "resolved"
+                        ]
+                      },
+                      "resolution": {
+                        "type": "string",
+                        "maxLength": 4000,
+                        "minLength": 0
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "page_id",
+                      "page_sha256",
+                      "comment",
+                      "status",
+                      "resolution"
+                    ]
+                  },
+                  "maxItems": 100
+                }
+              },
+              "required": [
+                "format_version",
+                "title",
+                "basis_refs",
+                "format",
+                "pages",
+                "notes"
+              ]
+            },
+            "source_refs": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "maxItems": 100
+            }
+          },
+          "required": [
+            "expected_revision",
+            "expected_sha256",
+            "operation_key",
+            "content"
+          ]
+        }
+      },
+      {
+        "id": "put_page",
+        "title": "维护绘本页",
+        "effect": "managed_write",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "expected_revision": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^([a-f0-9]{64})?$"
+            },
+            "operation_key": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            },
+            "page": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "minLength": 1
+                },
+                "number": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 32
+                },
+                "title": {
+                  "type": "string",
+                  "maxLength": 200,
+                  "minLength": 1
+                },
+                "turn_intent": {
+                  "type": "string",
+                  "maxLength": 4000,
+                  "minLength": 0
+                },
+                "images": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 1
+                      },
+                      "asset_source_index": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 99
+                      },
+                      "alt": {
+                        "type": "string",
+                        "maxLength": 1000,
+                        "minLength": 0
+                      },
+                      "rect": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "x": {
+                            "type": "number",
+                            "minimum": -30,
+                            "maximum": 1000
+                          },
+                          "y": {
+                            "type": "number",
+                            "minimum": -30,
+                            "maximum": 1000
+                          },
+                          "width": {
+                            "type": "number",
+                            "minimum": 0.1,
+                            "maximum": 1000
+                          },
+                          "height": {
+                            "type": "number",
+                            "minimum": 0.1,
+                            "maximum": 1000
+                          }
+                        },
+                        "required": [
+                          "x",
+                          "y",
+                          "width",
+                          "height"
+                        ]
+                      },
+                      "fit": {
+                        "enum": [
+                          "contain",
+                          "cover"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "asset_source_index",
+                      "alt",
+                      "rect",
+                      "fit"
+                    ]
+                  },
+                  "maxItems": 8
+                },
+                "texts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 1
+                      },
+                      "text": {
+                        "type": "string",
+                        "maxLength": 8000,
+                        "minLength": 1
+                      },
+                      "rect": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "x": {
+                            "type": "number",
+                            "minimum": -30,
+                            "maximum": 1000
+                          },
+                          "y": {
+                            "type": "number",
+                            "minimum": -30,
+                            "maximum": 1000
+                          },
+                          "width": {
+                            "type": "number",
+                            "minimum": 0.1,
+                            "maximum": 1000
+                          },
+                          "height": {
+                            "type": "number",
+                            "minimum": 0.1,
+                            "maximum": 1000
+                          }
+                        },
+                        "required": [
+                          "x",
+                          "y",
+                          "width",
+                          "height"
+                        ]
+                      },
+                      "font_size_pt": {
+                        "type": "number",
+                        "minimum": 8,
+                        "maximum": 72
+                      },
+                      "line_height": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 2.5
+                      },
+                      "color": {
+                        "type": "string",
+                        "pattern": "^#[0-9a-fA-F]{6}$"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "text",
+                      "rect",
+                      "font_size_pt",
+                      "line_height",
+                      "color"
+                    ]
+                  },
+                  "maxItems": 16
+                }
+              },
+              "required": [
+                "id",
+                "number",
+                "title",
+                "turn_intent",
+                "images",
+                "texts"
+              ]
+            }
+          },
+          "required": [
+            "object_id",
+            "expected_revision",
+            "expected_sha256",
+            "operation_key",
+            "page"
+          ]
+        }
+      },
+      {
+        "id": "remove_page",
+        "title": "移除绘本页",
+        "effect": "managed_write",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "expected_revision": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^([a-f0-9]{64})?$"
+            },
+            "operation_key": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            },
+            "page_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            }
+          },
+          "required": [
+            "object_id",
+            "expected_revision",
+            "expected_sha256",
+            "operation_key",
+            "page_id"
+          ]
+        }
+      },
+      {
+        "id": "put_note",
+        "title": "维护页内意见",
+        "effect": "managed_write",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "expected_revision": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^([a-f0-9]{64})?$"
+            },
+            "operation_key": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            },
+            "note": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "minLength": 1
+                },
+                "page_id": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "minLength": 1
+                },
+                "page_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "comment": {
+                  "type": "string",
+                  "maxLength": 8000,
+                  "minLength": 1
+                },
+                "status": {
+                  "enum": [
+                    "open",
+                    "resolved"
+                  ]
+                },
+                "resolution": {
+                  "type": "string",
+                  "maxLength": 4000,
+                  "minLength": 0
+                }
+              },
+              "required": [
+                "id",
+                "page_id",
+                "page_sha256",
+                "comment",
+                "status",
+                "resolution"
+              ]
+            }
+          },
+          "required": [
+            "object_id",
+            "expected_revision",
+            "expected_sha256",
+            "operation_key",
+            "note"
+          ]
+        }
+      },
+      {
+        "id": "remove_note",
+        "title": "移除页内意见",
+        "effect": "managed_write",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "expected_revision": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^([a-f0-9]{64})?$"
+            },
+            "operation_key": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            },
+            "note_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            }
+          },
+          "required": [
+            "object_id",
+            "expected_revision",
+            "expected_sha256",
+            "operation_key",
+            "note_id"
+          ]
+        }
+      },
+      {
+        "id": "check_layout",
+        "title": "检查页序、文字排版与图像分辨率",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            }
+          },
+          "required": [
+            "object_id"
+          ]
+        }
+      },
+      {
+        "id": "render_book",
+        "title": "读取离线绘本",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            },
+            "offset": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32000000
+            },
+            "max_bytes": {
+              "type": "integer",
+              "minimum": 256,
+              "maximum": 65536
+            }
+          },
+          "required": [
+            "object_id"
+          ]
+        }
+      },
+      {
+        "id": "export_pdf",
+        "title": "导出固定嵌字绘本PDF",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            },
+            "offset": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32000000
+            },
+            "max_bytes": {
+              "type": "integer",
+              "minimum": 256,
+              "maximum": 65536
+            }
+          },
+          "required": [
+            "object_id"
+          ]
+        }
+      },
+      {
+        "id": "page_digest",
+        "title": "读取页内意见基线",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            },
+            "page_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            }
+          },
+          "required": [
+            "object_id",
+            "page_id"
+          ]
+        }
+      },
+      {
+        "id": "locate_page",
+        "title": "定位固定页与图像来源",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            },
+            "page_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            }
+          },
+          "required": [
+            "object_id",
+            "page_id"
+          ]
+        }
+      },
+      {
+        "id": "get_source",
+        "title": "读取固定来源",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            },
+            "source_index": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 99
+            },
+            "offset": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000000
+            },
+            "max_bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 48000
+            }
+          },
+          "required": [
+            "object_id",
+            "source_index"
+          ]
+        }
+      },
+      {
+        "id": "get_basis",
+        "title": "读取固定专业依据",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            },
+            "basis_index": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 99
+            }
+          },
+          "required": [
+            "object_id",
+            "basis_index"
+          ]
+        }
+      },
+      {
+        "id": "compare_versions",
+        "title": "比较固定修订",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            },
+            "from_revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "to_revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            }
+          },
+          "required": [
+            "object_id",
+            "from_revision",
+            "to_revision"
+          ]
+        }
+      },
+      {
+        "id": "export_project",
+        "title": "导出固定专业报告",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            },
+            "format": {
+              "enum": [
+                "json",
+                "markdown",
+                "html"
+              ]
+            },
+            "offset": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32000000
+            },
+            "max_bytes": {
+              "type": "integer",
+              "minimum": 256,
+              "maximum": 48000
+            }
+          },
+          "required": [
+            "object_id",
+            "format"
+          ]
+        }
+      },
+      {
+        "id": "build_context",
+        "title": "准备有界创作上下文",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            },
+            "goal": {
+              "type": "string",
+              "maxLength": 8000,
+              "minLength": 1
+            },
+            "max_chars": {
+              "type": "integer",
+              "minimum": 256,
+              "maximum": 32000
+            }
+          },
+          "required": [
+            "object_id",
+            "goal",
+            "max_chars"
+          ]
+        }
+      },
+      {
+        "id": "create_handoff",
+        "title": "准备精确AI交接",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "detail": {
+              "enum": [
+                "full",
+                "summary"
+              ]
+            },
+            "goal": {
+              "type": "string",
+              "maxLength": 8000,
+              "minLength": 1
+            }
+          },
+          "required": [
+            "object_id",
+            "goal"
+          ]
+        }
+      },
+      {
+        "id": "get_operation",
+        "title": "回读原操作",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "operation_key": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
+            }
+          },
+          "required": [
+            "operation_key"
+          ]
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "picturebook",
+        "name": "hetu-picturebook",
+        "description": "围绕固定作品和图片编排绘本跨页、图文节奏与毫米版面，检查并交付离线阅读本和嵌字PDF。",
+        "entry": "skills/hetu-picturebook/SKILL.md"
+      }
+    ]
+  }
+}
