@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-19",
+  "records": [
+    {
+      "repository": "https://github.com/BloomBooks/BloomDesktop",
+      "commit": "2bf7100837fff2cdf94e314ef63f4f986b5f1b44",
+      "clone": "/Users/coso/Documents/dev/ai/limecloud/hetu/output/plugin-ij/research/bloom",
+      "files": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "858e015fbf93ced4c2d7f29dd31821aa83ddb01701dfd1fb110b068557c64deb"
+        },
+        {
+          "path": "src/BloomBrowserUI/bookEdit/toolbox/canvas/README.md",
+          "sha256": "dd44b2e6adae9c39a2dce9af128f3cc0c62826ef96683c17d89bef67e10aa782"
+        },
+        {
+          "path": "src/BloomBrowserUI/bookEdit/toolbox/canvas/customPageLayoutMenu.tsx",
+          "sha256": "8d2535a05c1d0a5ccce677f2767902a6f985018d9776d8e4c76f1fffaec2642f"
+        }
+      ],
+      "copied_code": false,
+      "license_boundary": "MIT，未复制代码"
+    }
+  ]
+}

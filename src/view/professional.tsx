@@ -1,0 +1,13 @@
+import React,{useEffect,useState} from 'react';
+import {readArtifact} from './artifact.ts';
+type Props={p:any;tab:number;invoke:any;run:any;show:any;download:any;selection:any;[key:string]:any};
+export function ProfessionalView({p,tab,invoke,run,show,download,selection}:Props){
+ const [html,setHTML]=useState(''),[error,setError]=useState('');
+ const ref=selection();
+ useEffect(()=>{let active=true;setHTML('');setError('');if(tab===0)void readArtifact(invoke,'render_book',ref).then(v=>{if(active)setHTML(new TextDecoder().decode(v.bytes));}).catch(e=>{if(active)setError(e.message);});return()=>{active=false;};},[ref.object_id,ref.revision,tab]);
+ if(tab===0)return <section><div className="actions"><p className="muted">{p.pages.length} 页　{p.format.width_mm} × {p.format.height_mm} 毫米　{p.format.direction==='rtl'?'从右向左':'从左向右'}</p><button onClick={()=>void run(()=>download('render_book'))}>导出阅读本</button><button onClick={()=>void run(()=>download('export_pdf'))}>导出绘本PDF</button></div>{error?<p role="alert">{error}</p>:html?<iframe className="artifact-frame book-frame" title="固定绘本阅读本" srcDoc={html} sandbox=""/>:<p role="status">正在排版固定绘本</p>}</section>;
+ if(tab===1)return <section>{[...p.pages].sort((a,b)=>a.number-b.number).map(page=><article className="page-row" key={page.id}><div><h3>第 {page.number} 页　{page.title}</h3><p>{page.turn_intent||'尚未记录翻页意图'}</p><button onClick={()=>void run(()=>show('locate_page',{page_id:page.id}))}>查看固定图文</button></div><div>{page.texts.map((t:any)=><p className="book-copy" key={t.id}>{t.text}</p>)}<p className="muted">{page.images.length} 个图像框　{page.texts.length} 个文字框</p></div></article>)}</section>;
+ if(tab===2)return <section><h3>尺寸与交付</h3><dl><dt>成品尺寸</dt><dd>{p.format.width_mm} × {p.format.height_mm} 毫米</dd><dt>出血</dt><dd>{p.format.bleed_mm} 毫米</dd><dt>安全边距</dt><dd>{p.format.safe_mm} 毫米</dd><dt>图像目标</dt><dd>{p.format.target_dpi} DPI</dd><dt>装订</dt><dd>{p.format.binding==='digital'?'数字阅读':'骑马钉'}</dd></dl><div className="actions"><button onClick={()=>void run(()=>show('check_layout'))}>检查实际版面</button><button onClick={()=>void run(()=>download('export_pdf'))}>导出绘本PDF</button></div><p className="muted">检查缺页、真实字体排版与图片分辨率。印厂规格和阅读体验由作者核对。</p></section>;
+ if(tab===3)return <section>{p.notes.length?p.notes.map((n:any)=><article key={n.id}><h3>{p.pages.find((v:any)=>v.id===n.page_id)?.title}</h3><p>{n.comment}</p><p className="muted">{n.status==='open'?'待处理':n.resolution}</p><button onClick={()=>void run(()=>show('page_digest',{page_id:n.page_id}))}>核对意见基线</button></article>):<p>尚无页内意见。可向AI指出页码与修改目标，意见会固定本次版面。</p>}<button onClick={()=>void run(()=>show('check_layout'))}>检查旧意见是否失效</button></section>;
+ return null;
+}
